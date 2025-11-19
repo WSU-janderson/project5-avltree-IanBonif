@@ -7,7 +7,24 @@ bool AVLTree::insert(const std::string& key, size_t value) {
         CurrentHeight(root);
         return true;
     }
-    return toInsert(root, key, value);
+    AVLNode *current = toInsert(root, key);
+    if (key == current->key) {
+        return false;
+    }if (key < current->key) {
+        if (current->right==nullptr) {
+            current->right=new AVLNode(key,value);
+            CurrentHeight(current->right);
+            CurrentHeight(current);
+            return true;
+        }
+    }else if (key > current->key) {
+        if (current->left==nullptr) {
+            current->left =new AVLNode(key,value);
+            CurrentHeight(current->left);
+            CurrentHeight(current);
+            return true;
+        }
+    }
 }
 size_t AVLTree::AVLNode::numChildren() const {
     return 0;
@@ -71,30 +88,21 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 
 void AVLTree::balanceNode(AVLNode *&node) {
 }
-bool AVLTree::toInsert(AVLNode *current,std::string key, size_t value) {
-    CurrentHeight(current);
-    if (key == current->key) {
-    return false;
-}if (key < current->key) {
-    if (current->right==nullptr) {
-        current->right=new AVLNode(key,value);
-        CurrentHeight(current->right);
-        return true;
+AVLTree::AVLNode* AVLTree::toInsert(AVLNode *current,std::string key) {
+    if (current != nullptr) {
+        return current;
     }
-    toInsert(current->right, key, value);
-}else if (key > current->key) {
-    if (current->left==nullptr) {
-        current->left =new AVLNode(key,value);
-        CurrentHeight(current->left);
-        return true;
+    if (current->key>key) {
+        return toInsert(current->right, key);
     }
-    toInsert(current->left, key, value);
-}
+    if (current->key<key) {
+        return toInsert(current->left, key);
+    }
 
 }
 void AVLTree::CurrentHeight(AVLNode*& current) {
-    size_t LHeight;
-    size_t RHeight;
+    int LHeight;
+    int RHeight;
     if (current->left==nullptr) {
         LHeight=-1;
     }

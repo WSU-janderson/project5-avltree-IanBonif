@@ -102,8 +102,8 @@ int main() {
     bool result=t1.insert("james",222);
     cout<<result<<endl;
     t1.insert("john",333);
-
-
+    t1.insert("christ",441);
+    t1.insert("cat",555);
 
     return 0;
 }

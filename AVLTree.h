@@ -39,7 +39,7 @@ public:
     bool insert(const std::string& key, std::size_t value);
     void CurrentHeight(AVLNode*& current);
     private:
-    AVLNode* root;
+    AVLNode* root=nullptr;
 
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
@@ -52,7 +52,7 @@ public:
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
 
-    bool toInsert(AVLNode *current, KeyType key, ValueType value);
+    AVLNode* toInsert(AVLNode *current, string key);
 };
 
 #endif //AVLTREE_H
