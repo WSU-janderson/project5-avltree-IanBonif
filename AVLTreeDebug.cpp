@@ -12,12 +12,12 @@ using namespace std;
 
 
 int main() {
-    // AVLTree tree;
-    // bool insertResult;
-    // insertResult = tree.insert("F", 'F');
-    // insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
-    // insertResult = tree.insert("K", 'K');
-    // insertResult = tree.insert("X", 'X');// single rotate left
+    AVLTree tree;
+    bool insertResult;
+    insertResult = tree.insert("F", 'F');
+    insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
+    insertResult = tree.insert("K", 'K');
+    insertResult = tree.insert("X", 'X');// single rotate left
     // cout << endl << endl;
     // cout << tree << endl;
     //
@@ -97,13 +97,15 @@ int main() {
 //    removeResult = tree.remove("Z"); // double rotate right
 //    cout << endl << endl;
 //    cout << tree << endl;
-     AVLTree t1;
-    t1.insert("james",111);
-    bool result=t1.insert("james",222);
-    cout<<result<<endl;
-    t1.insert("john",333);
-    t1.insert("christ",441);
-    t1.insert("cat",555);
-
+    //  AVLTree t1;
+    // t1.insert("james",111);
+    // bool result=t1.insert("james",222);
+    // cout<<result<<endl;
+    // t1.insert("john",333);
+    // t1.insert("christ",441);
+    // t1.insert("cat",555);
+    // t1.insert("milk",666);
+    // t1.insert("baby",777);
+    // t1.insert("cool",912);
     return 0;
 }

@@ -2,29 +2,13 @@
 
 #include <string>
 bool AVLTree::insert(const std::string& key, size_t value) {
-    if (root == NULL) {
-        root = new AVLNode(key,value);
-        CurrentHeight(root);
-        return true;
-    }
-    AVLNode *current = toInsert(root, key);
-    if (key == current->key) {
-        return false;
-    }if (key < current->key) {
-        if (current->right==nullptr) {
-            current->right=new AVLNode(key,value);
-            CurrentHeight(current->right);
-            CurrentHeight(current);
-            return true;
-        }
-    }else if (key > current->key) {
-        if (current->left==nullptr) {
-            current->left =new AVLNode(key,value);
-            CurrentHeight(current->left);
-            CurrentHeight(current);
-            return true;
-        }
-    }
+
+    AVLNode* current = toInsert(root, key);
+    current = new AVLNode(key,value);
+   if (root==nullptr) {
+        root=current;
+     }
+
 }
 size_t AVLTree::AVLNode::numChildren() const {
     return 0;
@@ -89,16 +73,18 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 void AVLTree::balanceNode(AVLNode *&node) {
 }
 AVLTree::AVLNode* AVLTree::toInsert(AVLNode *current,std::string key) {
-    if (current != nullptr) {
+    if (current==nullptr) {
         return current;
     }
-    if (current->key>key) {
+    if (key>current->key) {
         return toInsert(current->right, key);
     }
-    if (current->key<key) {
+    if (key<current->key) {
         return toInsert(current->left, key);
     }
 
+
+    return current;
 }
 void AVLTree::CurrentHeight(AVLNode*& current) {
     int LHeight;
