@@ -97,6 +97,13 @@ int main() {
 //    removeResult = tree.remove("Z"); // double rotate right
 //    cout << endl << endl;
 //    cout << tree << endl;
+     AVLTree t1;
+    t1.insert("james",111);
+    bool result=t1.insert("james",222);
+    cout<<result<<endl;
+    t1.insert("john",333);
+
+
 
     return 0;
 }
