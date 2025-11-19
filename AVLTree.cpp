@@ -3,18 +3,23 @@
 #include <string>
 bool AVLTree::insert(const std::string& key, size_t value) {
 
-    AVLNode* current = toInsert(root, key);
-    current = new AVLNode(key,value);
-   if (root==nullptr) {
-        root=current;
-     }
-
+    return toInsert(root,key ,value);
 }
 size_t AVLTree::AVLNode::numChildren() const {
-    return 0;
+    if (this->isLeaf()) {
+        return 0;
+    }
+    if (this->right!=nullptr&&this->left!=nullptr) {
+        return 2;
+    }
+    return 1;
 }
 
 bool AVLTree::AVLNode::isLeaf() const {
+    if (this->left == nullptr&&this->right == nullptr) {
+        return true;
+    }
+
     return false;
 }
 
@@ -37,7 +42,7 @@ bool AVLTree::removeNode(AVLNode*& current){
         if (current->right) {
             current = current->right;
         } else {
-            current = current->left;
+             current=current->left;;
         }
     } else {
         // case 3 - we have two children,
@@ -72,19 +77,21 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 
 void AVLTree::balanceNode(AVLNode *&node) {
 }
-AVLTree::AVLNode* AVLTree::toInsert(AVLNode *current,std::string key) {
-    if (current==nullptr) {
-        return current;
+bool AVLTree::toInsert(AVLNode *&node,std::string key,std::size_t value) {
+    if (node==nullptr) {
+        node=new AVLNode(key,value);
+        return true;
     }
-    if (key>current->key) {
-        return toInsert(current->right, key);
+    if (key==node->key) {
+        return false;
     }
-    if (key<current->key) {
-        return toInsert(current->left, key);
+    if (key>node->key) {
+        return toInsert(node->right, key,value);
     }
-
-
-    return current;
+    if (key<node->key) {
+        return toInsert(node->left, key,value);
+    }
+    return false;
 }
 void AVLTree::CurrentHeight(AVLNode*& current) {
     int LHeight;
@@ -108,4 +115,25 @@ void AVLTree::CurrentHeight(AVLNode*& current) {
         current->height = RHeight + 1;
     }
 
+}
+
+  bool AVLTree::find(AVLNode *&node, std::string key) {
+    if (node==nullptr) {
+        return false;
+    }
+    if (key==node->key) {
+        removeNode(node);
+        return true;
+    }
+    if (key>node->key) {
+        return find(node->right, key);
+    }
+    if (key<node->key) {
+        return find(node->left, key);
+    }
+    return false;
+
+}
+bool AVLTree::remove(const std::string& key) {
+    return find(root,key);
 }

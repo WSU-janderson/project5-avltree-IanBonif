@@ -38,7 +38,10 @@ public:
 
     bool insert(const std::string& key, std::size_t value);
     void CurrentHeight(AVLNode*& current);
-    private:
+    bool remove(const std::string& key);
+    bool find(AVLNode *&node, std::string key);
+
+private:
     AVLNode* root=nullptr;
 
     /* Helper methods for remove */
@@ -52,7 +55,9 @@ public:
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
 
-    AVLNode* toInsert(AVLNode *current, string key);
+    bool toInsert(AVLNode *&node, string key,size_t value);
+
+
 };
 
 #endif //AVLTREE_H

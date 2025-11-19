@@ -14,10 +14,13 @@ using namespace std;
 int main() {
     AVLTree tree;
     bool insertResult;
+    bool removeResult;
     insertResult = tree.insert("F", 'F');
     insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
     insertResult = tree.insert("K", 'K');
-    insertResult = tree.insert("X", 'X');// single rotate left
+    insertResult = tree.insert("X", 'X');//single rotate left
+    removeResult= tree.remove("K");
+    removeResult= tree.remove("K");
     // cout << endl << endl;
     // cout << tree << endl;
     //
