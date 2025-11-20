@@ -4,6 +4,7 @@
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
+#include <optional>
 #include <string>
 
 using namespace std;
@@ -20,6 +21,7 @@ protected:
         ValueType value;
         size_t height;
         int balance;
+
 
         AVLNode* left;
         AVLNode* right;
@@ -43,11 +45,24 @@ public:
 
     int getBalance(AVLNode *&node);
 
+    bool contains(const std::string &key);
+
+    bool findOnly(AVLNode *&node, std::string key);
+
+    std::optional<size_t> get(const std::string &key);
+
+    std::optional<size_t> ValueGet(AVLNode *&node, std::string key);
+
     bool find(AVLNode *&node, std::string key);
+    size_t size() const;
+
+    size_t &operator[](const std::string &key);
+
+    size_t &FORoperator(AVLNode *&node, std::string key);
 
 private:
     AVLNode* root=nullptr;
-
+    size_t TreeSize;
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
     bool remove(AVLNode*& current, KeyType key);

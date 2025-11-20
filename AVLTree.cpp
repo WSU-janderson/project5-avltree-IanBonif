@@ -1,5 +1,6 @@
 #include "AVLTree.h"
 
+#include <optional>
 #include <string>
 bool AVLTree::insert(const std::string& key, size_t value) {
     return toInsert(root,key ,value);
@@ -83,6 +84,19 @@ void AVLTree::balanceNode(AVLNode *&node) {
             temp->right=nullptr;
 
         }
+        if (node->balance < -1 && node->right->balance > 0) {
+            AVLNode*temp=node;
+            node=node->right;
+            node->left=temp;
+            temp->right=nullptr;
+
+
+            AVLNode* temp2=node;
+            node=node->left;
+            node->right=temp2;
+            temp2->left=nullptr;
+
+        }
     }
     if (node->left!=nullptr) {
         if (node->balance > 1 && node->left->balance >= 0) {
@@ -91,11 +105,24 @@ void AVLTree::balanceNode(AVLNode *&node) {
             node->right=temp2;
             temp2->left=nullptr;
         }
+        if (node->balance < -1 && node->left->balance < 0) {
+            AVLNode*temp3=node;
+            node=node->right;
+            node->left=temp3;
+            temp3->right=nullptr;
+
+            AVLNode* temp4=node;
+            node=node->left;
+            node->right=temp4;
+            temp4->left=nullptr;
+        }
+
     }
 }
 bool AVLTree::toInsert(AVLNode *&node,std::string key,std::size_t value) {
     if (node==nullptr) {
         node=new AVLNode(key,value);
+        this->TreeSize+=1;
         return true;
     }
 
@@ -146,13 +173,18 @@ void AVLTree::CurrentHeight(AVLNode*& current) {
     }
     if (key==node->key) {
         removeNode(node);
+        this->TreeSize-=1;
         return true;
     }
     if (key>node->key) {
-        return find(node->right, key);
+        find(node->right, key);
+        CurrentHeight(node);
+        node->balance=getBalance(node);
     }
     if (key<node->key) {
-        return find(node->left, key);
+        find(node->left, key);
+        CurrentHeight(node);
+        node->balance=getBalance(node);
     }
     return false;
 
@@ -172,4 +204,64 @@ int AVLTree::getBalance(AVLNode *&node) {
         return node->balance + (static_cast<int>(node->left->height+1));
     }
     return 0;
+}
+bool AVLTree::contains(const std::string& key) {
+    return findOnly(root,key);
+}
+
+bool AVLTree::findOnly(AVLNode *&node, std::string key) {
+    if (node==nullptr) {
+        return false;
+    }
+    if (key==node->key) {
+        return true;
+    }
+    if (key>node->key) {
+        return findOnly(node->right, key);
+    }
+    if (key<node->key) {
+        return findOnly(node->left, key);
+    }
+    return false;
+
+}
+std::optional<size_t> AVLTree::get(const std::string& key) {
+    return ValueGet(root,key);
+}
+
+std::optional<size_t> AVLTree::ValueGet(AVLNode *&node, std::string key) {
+    if (node==nullptr) {
+        return std::nullopt;
+    }
+    if (key==node->key) {
+        return node->value;
+    }
+    if (key>node->key) {
+        return ValueGet(node->right, key);
+    }
+    if (key<node->key) {
+        return ValueGet(node->left, key);
+    }
+    return std::nullopt;
+
+}
+size_t AVLTree::size()const {
+    return this->TreeSize;
+}
+size_t& AVLTree::operator[](const std::string& key) {
+    return FORoperator(root,key);
+}
+size_t& AVLTree::FORoperator(AVLNode *&node, std::string key) {
+
+    if (key==node->key) {
+        return node->value;
+    }
+    if (key>node->key) {
+        return FORoperator(node->right, key);
+    }
+    if (key<node->key) {
+        return FORoperator(node->left, key);
+    }
+
+
 }
