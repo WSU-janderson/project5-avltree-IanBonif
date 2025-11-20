@@ -19,6 +19,7 @@ protected:
         KeyType key;
         ValueType value;
         size_t height;
+        int balance;
 
         AVLNode* left;
         AVLNode* right;
@@ -39,6 +40,9 @@ public:
     bool insert(const std::string& key, std::size_t value);
     void CurrentHeight(AVLNode*& current);
     bool remove(const std::string& key);
+
+    int getBalance(AVLNode *&node);
+
     bool find(AVLNode *&node, std::string key);
 
 private:

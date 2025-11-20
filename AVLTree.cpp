@@ -2,7 +2,6 @@
 
 #include <string>
 bool AVLTree::insert(const std::string& key, size_t value) {
-
     return toInsert(root,key ,value);
 }
 size_t AVLTree::AVLNode::numChildren() const {
@@ -24,7 +23,7 @@ bool AVLTree::AVLNode::isLeaf() const {
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
-    return 0;
+    return this->height;
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -76,20 +75,44 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
+    if (node->right!=nullptr) {
+        if (node->balance < -1 && node->right->balance <= 0) {
+            AVLNode*temp=node;
+            node=node->right;
+            node->left=temp;
+            temp->right=nullptr;
+
+        }
+    }
+    if (node->left!=nullptr) {
+        if (node->balance > 1 && node->left->balance >= 0) {
+            AVLNode* temp2=node;
+            node=node->left;
+            node->right=temp2;
+            temp2->left=nullptr;
+        }
+    }
 }
 bool AVLTree::toInsert(AVLNode *&node,std::string key,std::size_t value) {
     if (node==nullptr) {
         node=new AVLNode(key,value);
         return true;
     }
+
     if (key==node->key) {
         return false;
     }
     if (key>node->key) {
-        return toInsert(node->right, key,value);
+        toInsert(node->right, key,value);
+        CurrentHeight(node);
+        node->balance=getBalance(node);
+        balanceNode(node);
     }
     if (key<node->key) {
-        return toInsert(node->left, key,value);
+        toInsert(node->left, key,value);
+        CurrentHeight(node);
+        node->balance=getBalance(node);
+        balanceNode(node);
     }
     return false;
 }
@@ -136,4 +159,17 @@ void AVLTree::CurrentHeight(AVLNode*& current) {
 }
 bool AVLTree::remove(const std::string& key) {
     return find(root,key);
+}
+int AVLTree::getBalance(AVLNode *&node) {
+
+    if (node->left!=nullptr&&node->right!=nullptr) {
+        return node->balance+(static_cast<int>(node->left->height) - static_cast<int>( node->right->height));
+    }
+    if (node->left==nullptr&&node->right!=nullptr) {
+        return node->balance +( -1 - static_cast<int>(node->right->height));
+    }
+    if (node->left!=nullptr&&node->right==nullptr) {
+        return node->balance + (static_cast<int>(node->left->height+1));
+    }
+    return 0;
 }
